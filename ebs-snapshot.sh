@@ -96,7 +96,7 @@ cleanup_snapshots() {
 			# Check age of snapshot
 			snapshot_date=$(aws ec2 describe-snapshots --region $region --output=text --snapshot-ids $snapshot --query Snapshots[].StartTime | awk -F "T" '{printf "%s\n", $1}')
 			snapshot_date_in_seconds=$(date "--date=$snapshot_date" +%s)
-			snapshot_description=$(aws ec2 describe-snapshots --snapshot-id $snapshot --region $region --query Snapshots[].Description)
+			snapshot_description=$(aws ec2 describe-snapshots --snapshot-id $snapshot --region $region --query Snapshots[0].Description)
 
 			if (( $snapshot_date_in_seconds <= $retention_date_in_seconds )); then
 				log "DELETING snapshot $snapshot. Description: $snapshot_description ..."
